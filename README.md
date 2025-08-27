@@ -1,17 +1,23 @@
 # Cloud Backup App
 
-This is the **Flask API backend** for our Cloud Backup Service project.  
+# Cloud Backup App
+
+This is the **Flask API backend** for the Cloud Backup Service project.  
 It allows users to upload, list, and restore files stored in **Amazon S3**.  
-(Currently, only `/upload` is fully implemented with AWS integration.)
+(Currently, `/health`, `/upload`, and `/list` are implemented.)
 
 ---
 
 ## ✅ Features (so far)
-- `/health` → returns `{ "status": "ok" }`  
-- `/upload` → uploads a file to S3 bucket (`cloud-backup-jason123`)  
-- `/list` → (dummy version for now, real S3 integration coming soon)  
-- `/restore` → (dummy version for now)  
-- Dockerized for containerized deployment  
+- `/health` → returns `{ "status": "ok" }`
+- `/upload` → uploads a file to S3 bucket (from `.env` config)
+- `/list` → lists files in the S3 bucket with metadata:
+  - filename
+  - size (bytes)
+  - last_modified timestamp
+- `/restore` → (coming soon, will use S3 versioning)
+- Dockerized for containerized deployment
+- Supports **Docker Compose** for easy setup
 
 ---
 
@@ -21,5 +27,6 @@ It allows users to upload, list, and restore files stored in **Amazon S3**.
 ```bash
 git clone https://github.com/<your-username>/cloud-backup-app.git
 cd cloud-backup-app
+
 
 
