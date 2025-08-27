@@ -1,6 +1,12 @@
+import boto3
 from flask import Flask, jsonify, request
+import os
 
 app = Flask(__name__)
+
+# Connect to S3
+s3 = boto3.client("s3")
+BUCKET_NAME = "cloud-backup-jason888"
 
 @app.route("/health")
 def health():
@@ -8,7 +14,13 @@ def health():
 
 @app.route("/upload", methods=["POST"])
 def upload():
-    return jsonify({"message": "File uploaded (dummy)", "status": "ok"})
+    if "file" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files["file"]
+    s3.upload_fileobj(file, BUCKET_NAME, file.filename)
+
+    return jsonify({"message": f"{file.filename} uploaded to S3", "status": "ok"})
 
 @app.route("/list", methods=["GET"])
 def list_files():
