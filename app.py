@@ -1,12 +1,15 @@
 import boto3
-from flask import Flask, jsonify, request
 import os
+from flask import Flask, jsonify, request
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
 
-# Connect to S3
 s3 = boto3.client("s3")
-BUCKET_NAME = "cloud-backup-jason888"
+BUCKET_NAME = os.getenv("BUCKET_NAME")
 
 @app.route("/health")
 def health():

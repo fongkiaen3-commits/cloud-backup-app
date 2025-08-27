@@ -7,3 +7,6 @@ __pycache__/
 
 # Ignore AWS credentials
 .aws/
+
+# Ignore env file
+.env
