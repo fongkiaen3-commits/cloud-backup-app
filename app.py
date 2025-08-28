@@ -38,12 +38,20 @@ def upload():
 
 @app.route("/list", methods=["GET"])
 def list_files():
-    return jsonify({
-        "files": [
-            {"filename": "report.pdf", "version": 1, "timestamp": "2025-08-26"},
-            {"filename": "photo.png", "version": 2, "timestamp": "2025-08-25"}
-        ]
-    })
+    try:
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME)
+        files = []
+        if "Contents" in response:
+            for obj in response["Contents"]:
+                files.append({
+                    "filename": obj["Key"],
+                    "size": obj["Size"],
+                    "last_modified": obj["LastModified"].isoformat()
+                })
+        return jsonify(files)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/restore/<filename>", methods=["POST"])
 def restore(filename):
